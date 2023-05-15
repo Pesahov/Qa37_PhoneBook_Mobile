@@ -2,16 +2,18 @@ package tests;
 
 import config.AppiumConfig;
 import models.Auth;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import screens.AuthenticationScreen;
+import screens.ContactListScreen;
 
 public class LoginSecondTests extends AppiumConfig {
 
     @Test
     public void loginSuccess(){
         new AuthenticationScreen(driver)
-                .fillEmail("noa@gmail.com")
-                .fillPassword("Nnoa12345$")
+                .fillEmail("shilol@gmail.com")
+                .fillPassword("Shilol12345$")
                 .submitLogin()
                 .isAccountOpened()
                 .logout();
@@ -20,7 +22,7 @@ public class LoginSecondTests extends AppiumConfig {
     @Test
     public void loginSuccessModel(){
         new AuthenticationScreen(driver)
-                .fillLoginRegistrationForm(Auth.builder().email("noa@gmail.com").password("Nnoa12345$").build())
+                .fillLoginRegistrationForm(Auth.builder().email("shilol@gmail.com").password("Shilol12345$").build())
                 .submitLogin()
                 .isAccountOpened()
                 .logout();
@@ -28,9 +30,21 @@ public class LoginSecondTests extends AppiumConfig {
     @Test
     public void loginWrongEmail(){
         new AuthenticationScreen(driver)
-                .fillLoginRegistrationForm(Auth.builder().email("noagmail.com").password("Nnoa12345$").build())
+                .fillLoginRegistrationForm(Auth.builder().email("shilolgmail.com").password("Shilol12345$").build())
                 .submitLoginNegative()
                 .isErrorMessageContainsText("Login or Password incorrect");
+    }
+
+    @Test
+    public void loginWrongPassword(){
+        new AuthenticationScreen(driver)
+                .fillLoginRegistrationForm(Auth.builder().email("shilol@gmail.com").password("Shilol123").build())
+                .submitLoginNegative()
+                .isErrorMessageContainsText("Login or Password incorrect");
+    }
+    @AfterMethod
+    public void posCondition(){
+        new ContactListScreen(driver).logout();
     }
 
 }

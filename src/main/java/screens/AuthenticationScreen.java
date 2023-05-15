@@ -52,13 +52,10 @@ public class AuthenticationScreen extends BaseScreen{
         loginButton.click();
         return this;
     }
-
     public AuthenticationScreen isErrorMessageContainsText(String text){
-        Alert alert = new WebDriverWait(driver,10)
-                .until(ExpectedConditions.alertIsPresent());
-        driver.switchTo().alert();
-        Assert.assertTrue(alert.getText().contains(text));
-        alert.accept();
+        checkAlertText(text);
+
         return this;
     }
 }
+
