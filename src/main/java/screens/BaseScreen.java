@@ -4,12 +4,15 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.rmi.server.ExportException;
+import java.util.List;
 
 public class BaseScreen {
 
@@ -21,9 +24,10 @@ public class BaseScreen {
     }
 
     public void type(AndroidElement element, String text){
+        element.click();
+        element.clear();
         if(text!=null){
-            element.click();
-            element.clear();
+
             element.sendKeys(text);
         }
         driver.hideKeyboard();
@@ -36,6 +40,12 @@ public class BaseScreen {
     public void should(AndroidElement element, int time){
         new WebDriverWait(driver,time).until(ExpectedConditions.visibilityOf(element));
     }
+
+    public void shoulLessOne(List<AndroidElement>list, int less){
+        new WebDriverWait(driver, 5)
+                .until(ExpectedConditions.numberOfElementsToBeLessThan(By.xpath("//*[@resource-id='com.sheygam.contactapp:id/rowContainer']"), less));
+    }
+
     public void checkAlertText(String text){
         Alert alert = new WebDriverWait(driver,10)
                 .until(ExpectedConditions.alertIsPresent());
@@ -44,5 +54,21 @@ public class BaseScreen {
         Assert.assertTrue(alert.getText().contains(text));
         alert.accept();
 
+    }
+    public  boolean isElementPresentInList(By locator){
+        return driver.findElements(locator).size()>0;
+
+    }
+    public  boolean isElementPresentInList(List<AndroidElement> list){
+        return list.size()>0;
+
+    }
+    public  boolean isElementDisplayed(AndroidElement element){
+        try {
+            should( element,5);
+            return element.isDisplayed();
+        }catch (IllegalAccessError e){
+            return false;
+        }
     }
 }
