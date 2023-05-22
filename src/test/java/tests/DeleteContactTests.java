@@ -13,7 +13,8 @@ public class DeleteContactTests extends AppiumConfig {
     public void PreCondition(){
         new AuthenticationScreen(driver)
                 .fillLoginRegistrationForm(Auth.builder().email("wick@gmail.com").password("Ww12345$").build())
-                .submitLogin();
+                .submitLogin()
+                .isActivityTitleDisplayed("Contact list");
     }
 
     @Test
@@ -21,6 +22,14 @@ public class DeleteContactTests extends AppiumConfig {
         new ContactListScreen(driver)
                 .deleteFirstContact()
                 .isListSizeLessThenOne();
+
+    }
+
+    @Test
+    public void removeAllContactSuccess(){
+        new ContactListScreen(driver)
+                .removeAllContact()
+                .isNoContactHere();
 
     }
 }

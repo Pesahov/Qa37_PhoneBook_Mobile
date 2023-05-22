@@ -32,8 +32,11 @@ public class ContactListScreen extends BaseScreen{
     List<AndroidElement> contactList;
     @FindBy(id="android:id/button1")
     AndroidElement yesBButton;
+    @FindBy (id ="com.sheygam.contactapp:id/emptyTxt")
+    AndroidElement noContactHereTextView;
     int  countBefore;
     int countAfter;
+
 
     public ContactListScreen deleteFirstContact(){
 
@@ -126,6 +129,21 @@ public class ContactListScreen extends BaseScreen{
 
         Assert.assertEquals(countBefore-countAfter,1);
 
+        return this;
+    }
+    public ContactListScreen removeAllContact() {
+        pause(1000);
+        // while (driver.findElements(By.xpath("//*[@resource-id='com.sheygam.contactapp:id/rowContainer']")).size()>0){
+        while (contactList.size()>0){
+            deleteFirstContact();
+        }
+
+
+        return this;
+    }
+
+    public ContactListScreen isNoContactHere(){
+        isShouldHave(noContactHereTextView,"No Contacts. Add One more!",10);
         return this;
     }
 }
